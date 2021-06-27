@@ -1,17 +1,17 @@
 import React from "react";
 
 import PropTypes from "prop-types";
-import { INGREDIENT_GROUP_TYPE } from "../../../../utils/types";
+import { INGREDIENT_GROUP_TYPE } from "../../../utils/types";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-function IngredientTypeTab({ types }: any) {
+function IngredientTypeTab({ types }) {
   const [current, setCurrent] = React.useState("bun");
 
   return (
-    <div style={{ display: "flex" }}>
+    <nav style={{ display: "flex" }}>
       {types &&
-        types.map((el: any) => (
+        types.map((el) => (
           <Tab
             key={el.type}
             value={el.type}
@@ -21,7 +21,7 @@ function IngredientTypeTab({ types }: any) {
             {el.name}
           </Tab>
         ))}
-    </div>
+    </nav>
   );
 }
 

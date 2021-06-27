@@ -6,20 +6,20 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import PropTypes from "prop-types";
-import { INGREDIENT_TYPE } from "../../../../utils/types";
+import { INGREDIENT_TYPE } from "../../../utils/types";
 
-import ingredientCardStyles from "./ingredient-card.module.css";
+import styles from "./ingredient-card.module.css";
 
-function IngredientTypeCard({ ingredient }: any) {
+function IngredientTypeCard({ ingredient }) {
   return (
-    <div className={`${ingredientCardStyles.card} pr-4 pl-4`}>
+    <div className={`${styles.card} pr-4 pl-4`}>
       <Counter count={1} size="default" />
-      <img src={ingredient.image} alt="Burger ingredient" />
-      <div className={`${ingredientCardStyles.cost} mt-1 mb-1`}>
+      <img src={ingredient.image} alt={ingredient.name} />
+      <div className={`${styles.cost} mt-1 mb-1`}>
         <p className="text_type_digits-default pr-2">{ingredient.price}</p>
         <CurrencyIcon type="primary" />
       </div>
-      <div className={ingredientCardStyles.name}>
+      <div className={styles.name}>
         <p className="text text_type_main-default">{ingredient.name}</p>
       </div>
     </div>

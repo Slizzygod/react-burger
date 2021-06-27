@@ -9,6 +9,12 @@
   row-gap: 16px;
 }
 
+.element {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
 .scroll_elements::-webkit-scrollbar {
   width: 12px;
 }
@@ -23,10 +29,23 @@
 
 .scroll_elements {
   composes: elements;
-  padding-right: 4px;
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 50px;
+}
+
+.element_top {
+  margin: 0 auto;
+  padding-right: 0;
+}
+
+.element_bottom {
+  margin-left: auto;
+}
+
+.scroll_element {
+  composes: element;
+  justify-content: space-between;
 }
 
 .footer {
