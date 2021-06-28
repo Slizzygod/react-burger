@@ -1,7 +1,7 @@
 import React from "react";
 
 import PropTypes from "prop-types";
-import { INGREDIENT_GROUP_TYPE } from "../../../utils/types";
+import { INGREDIENT_GROUP_TYPE } from "../../../shared/utils/types";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 

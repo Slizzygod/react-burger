@@ -1,0 +1,22 @@
+.info {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  width: 520px;
+  margin: 0 auto;
+  user-select: none;
+}
+
+.image {
+  width: 440px;
+  height: 240px;
+  margin: auto;
+}
+
+.worth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}

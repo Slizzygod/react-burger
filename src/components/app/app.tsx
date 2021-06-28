@@ -2,11 +2,20 @@ import React from "react";
 
 import { Header, BurgerIngredients, BurgerConstructor } from "../index";
 
-import { data } from "../../utils/data";
+import { spaceUrl } from "../../shared/utils/consts";
+import { dataService } from "../../shared/services/data.service";
 
 import styles from "./app.module.css";
 
 function App() {
+  const [data, setData] = React.useState([]);
+
+  React.useEffect(() => {
+    dataService.get(`${spaceUrl}/api/ingredients`).then((requestData) => {
+      setData(requestData);
+    });
+  }, []);
+
   return (
     <>
       <Header />

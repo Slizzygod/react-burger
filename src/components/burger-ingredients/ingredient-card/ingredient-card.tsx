@@ -6,13 +6,16 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import PropTypes from "prop-types";
-import { INGREDIENT_TYPE } from "../../../utils/types";
+import { INGREDIENT_TYPE } from "../../../shared/utils/types";
 
 import styles from "./ingredient-card.module.css";
 
-function IngredientTypeCard({ ingredient }) {
+function IngredientTypeCard({ ingredient, onClickIngredient }) {
   return (
-    <div className={`${styles.card} pr-4 pl-4`}>
+    <div
+      className={`${styles.card} pr-4 pl-4`}
+      onClick={() => onClickIngredient(ingredient)}
+    >
       <Counter count={1} size="default" />
       <img src={ingredient.image} alt={ingredient.name} />
       <div className={`${styles.cost} mt-1 mb-1`}>
@@ -28,6 +31,7 @@ function IngredientTypeCard({ ingredient }) {
 
 IngredientTypeCard.propTypes = {
   ingredient: PropTypes.shape(INGREDIENT_TYPE),
+  onClickIngredient: PropTypes.func.isRequired,
 };
 
 export default IngredientTypeCard;
