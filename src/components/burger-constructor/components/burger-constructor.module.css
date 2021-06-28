@@ -1,0 +1,15 @@
+.element {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.element_locked {
+  composes: element;
+  justify-content: flex-end;
+}
+
+.element_unlocked {
+  composes: element;
+  justify-content: space-between;
+}

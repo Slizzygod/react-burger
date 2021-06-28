@@ -1,0 +1,22 @@
+.section {
+  width: 600px;
+  min-height: 225px;
+}
+
+.elements::-webkit-scrollbar {
+  width: 12px;
+}
+.elements::-webkit-scrollbar-track {
+  background: #2f2f37;
+  margin-bottom: 52px;
+}
+.elements::-webkit-scrollbar-thumb {
+  background: #8585ad;
+  border: 3px solid #2f2f37;
+  border-radius: 6px;
+}
+
+.elements {
+  min-height: 50px;
+  overflow-x: auto;
+}

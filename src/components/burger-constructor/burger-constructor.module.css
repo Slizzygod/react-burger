@@ -1,0 +1,41 @@
+.section {
+  width: 600px;
+  min-height: 225px;
+}
+
+.elements {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.scroll_elements::-webkit-scrollbar {
+  width: 12px;
+}
+.scroll_elements::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+.scroll_elements::-webkit-scrollbar-thumb {
+  background: #8585ad;
+  border: 3px solid #2f2f37;
+  border-radius: 6px;
+}
+
+.scroll_elements {
+  composes: elements;
+  padding-right: 4px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 50px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.total_cost {
+  display: flex;
+  align-items: center;
+}

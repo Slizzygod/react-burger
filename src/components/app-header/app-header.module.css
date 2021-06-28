@@ -1,0 +1,30 @@
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.header {
+  background-color: #1c1c21;
+  width: 100%;
+}
+
+.container {
+  composes: flex;
+  justify-content: space-between;
+  width: 1280px;
+  margin: 0 auto;
+}
+
+.main_buttons {
+  composes: flex;
+}
+
+.button {
+  composes: flex;
+  cursor: pointer;
+}
+
+.logo {
+  flex-grow: 1;
+  padding-left: 115px;
+}
