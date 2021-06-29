@@ -1,57 +1,52 @@
 import React from "react";
 
 import PropTypes from "prop-types";
-import { INGREDIENT_TYPE } from "../../utils/types";
+import { INGREDIENT_TYPE } from "../../shared/utils/types";
 
-import IngredientTypeTab from "./components/ingredient-type-tab/ingredient-type-tab";
-import IngredientTypeBlock from "./components/ingredient-type-block/ingredient-type-block";
+import withModal from "../hoc/with-modal";
 
-import {
-  onMapIngredients,
-  onMapIngredientTypes,
-} from "./burger-ingredients.service";
+import IngredientTypeTab from "./ingredient-type-tab/ingredient-type-tab";
+import IngredientTypeBlock from "./ingredient-type-block/ingredient-type-block";
+import IngredientDetails from "./ingredient-details/ingredient-details";
 
-import { SECTION_HEIGHT } from "../../utils/consts";
-import {
-  HEADIN_MARGIN_TOP,
-  HEADIN_MARGIN_BOTTOM,
-  TAB_HEIGHT,
-  TAB_MARGIN_BOTTOM,
-  TYPE_BLOCK_PADDING_BOTTOM,
-} from "./burger-ingredients.consts";
+import { dataMapService } from "../../shared/services/data-map.service";
 
-import burgerIngredientsStyles from "./burger-ingredients.module.css";
+import styles from "./burger-ingredients.module.css";
 
-function BurgerIngredients({ data }: any) {
-  const ingredientsData = onMapIngredients(data);
-  const ingredientTypes = onMapIngredientTypes(data);
+function BurgerIngredients({ data }) {
+  const [selectedIngredient, setSelectedIngredient] = React.useState(null);
 
-  const heightBlockCards =
-    SECTION_HEIGHT -
-    HEADIN_MARGIN_TOP -
-    HEADIN_MARGIN_BOTTOM -
-    TAB_HEIGHT -
-    TAB_MARGIN_BOTTOM -
-    TYPE_BLOCK_PADDING_BOTTOM;
+  const handleChildUnmount = () => {
+    setSelectedIngredient(null);
+  };
+
+  const WithModal = withModal({
+    data: selectedIngredient,
+    unmount: handleChildUnmount,
+    displayTitle: true,
+  })(IngredientDetails);
+
+  const ingredientsData = dataMapService.getIngredients(data);
+  const ingredientTypes = dataMapService.getIngredientTypes(data);
+
+  const onClickIngredient = (ingredient) => {
+    setSelectedIngredient(ingredient);
+  };
 
   return (
-    <section
-      className={`${burgerIngredientsStyles.section} mr-10`}
-      style={{ height: SECTION_HEIGHT }}
-    >
+    <section className={`${styles.section} mr-10`}>
+      {selectedIngredient && <WithModal />}
       <p className="mt-10 mb-5 text_type_main-large">Соберите бургер</p>
 
       <IngredientTypeTab types={ingredientTypes} />
 
-      <div
-        className={`${burgerIngredientsStyles.elements} mt-10`}
-        style={{ height: heightBlockCards }}
-      >
+      <div className={`${styles.elements} elements mt-10`}>
         {ingredientsData &&
           ingredientsData.map((ingredientData) => (
             <IngredientTypeBlock
               key={ingredientData.type}
               ingredientData={ingredientData}
+              onClickIngredient={onClickIngredient}
             />
           ))}
       </div>

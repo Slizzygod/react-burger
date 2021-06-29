@@ -3,83 +3,86 @@ import React from "react";
 import {
   Button,
   CurrencyIcon,
+  ConstructorElement,
+  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
+import withModal from "../hoc/with-modal";
+
+import OrderDetails from "./order-details/order-details";
+
 import PropTypes from "prop-types";
-import { INGREDIENT_TYPE } from "../../utils/types";
+import { INGREDIENT_TYPE } from "../../shared/utils/types";
 
-import BurgerConstructorElement from "./components/burger-constructor-element";
+import styles from "./burger-constructor.module.css";
 
-import { SECTION_HEIGHT } from "../../utils/consts";
-import {
-  ELEMENTS_MARGIN_TOP,
-  ELEMENT_HEIGHT,
-  ELEMENT_MARGIN_BOTTOM,
-  ELEMENTS_MARGIN_BOTTOM,
-} from "./burger-constructor.consts";
+function BurgerConstructor({ data }) {
+  const [idOrder, setIdOrder] = React.useState<any | null>(null);
 
-import burgerConstructorStyles from "./burger-constructor.module.css";
+  const handleChildUnmount = () => {
+    setIdOrder(null);
+  };
 
-function BurgerConstructor({ data }: any) {
-  const heightScrollElements =
-    SECTION_HEIGHT -
-    ELEMENTS_MARGIN_TOP -
-    ELEMENT_HEIGHT -
-    ELEMENT_MARGIN_BOTTOM -
-    ELEMENT_HEIGHT -
-    ELEMENT_MARGIN_BOTTOM -
-    ELEMENT_HEIGHT -
-    ELEMENT_MARGIN_BOTTOM -
-    ELEMENTS_MARGIN_BOTTOM;
+  const WithModal = withModal({
+    data: idOrder,
+    unmount: handleChildUnmount,
+    displayTitle: false,
+  })(OrderDetails);
+
+  const onClickCreateOrder = () => {
+    setIdOrder("034536");
+  };
 
   return (
-    <section
-      className={burgerConstructorStyles.section}
-      style={{ height: SECTION_HEIGHT }}
-    >
-      <div className={`${burgerConstructorStyles.elements} pl-4 mt-25 mb-10`}>
-        <div className="pr-4">
-          <BurgerConstructorElement
-            type="top"
-            isLocked={true}
-            text={data[0].name}
-            price={data[0].price}
-            thumbnail={data[0].image}
-          />
+    <section className={styles.section}>
+      {idOrder && <WithModal />}
+      <div className={`${styles.elements} pl-4 mt-25 mb-10`}>
+        <div className={`${styles.element_top} pr-4`}>
+          {data && data.length > 0 && (
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={data[0].name}
+              price={data[0].price}
+              thumbnail={data[0].image}
+            />
+          )}
         </div>
 
-        <div
-          className={burgerConstructorStyles.scroll_elements}
-          style={{ height: heightScrollElements }}
-        >
+        <ul className={`${styles.scroll_elements} scroll_elements pr-1`}>
           {data &&
-            data.map((ingredient: any) => (
-              <BurgerConstructorElement
-                key={ingredient._id}
-                text={ingredient.name}
-                price={ingredient.price}
-                thumbnail={ingredient.image}
-              />
+            data.length > 0 &&
+            data.map((ingredient) => (
+              <li key={ingredient._id} className={styles.scroll_element}>
+                <DragIcon type="primary" />
+                <ConstructorElement
+                  text={ingredient.name}
+                  price={ingredient.price}
+                  thumbnail={ingredient.image}
+                />
+              </li>
             ))}
-        </div>
+        </ul>
 
-        <div className="pr-4">
-          <BurgerConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={data[data.length - 1].name}
-            price={data[data.length - 1].price}
-            thumbnail={data[data.length - 1].image}
-          />
+        <div className={`${styles.element_bottom} pr-4`}>
+          {data && data.length > 0 && (
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={data[data.length - 1].name}
+              price={data[data.length - 1].price}
+              thumbnail={data[data.length - 1].image}
+            />
+          )}
         </div>
       </div>
 
-      <div className={`${burgerConstructorStyles.footer} pr-4`}>
-        <div className={`${burgerConstructorStyles.total_cost} mr-10`}>
+      <div className={`${styles.footer} pr-4`}>
+        <div className={`${styles.total_cost} mr-10`}>
           <p className="text_type_digits-medium pr-2">610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large">
+        <Button onClick={onClickCreateOrder} type="primary" size="large">
           Оформить заказ
         </Button>
       </div>

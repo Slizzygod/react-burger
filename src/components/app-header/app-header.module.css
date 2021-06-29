@@ -8,7 +8,7 @@
   width: 100%;
 }
 
-.container {
+.navigation {
   composes: flex;
   justify-content: space-between;
   width: 1280px;

@@ -1,3 +1,18 @@
+:root {
+  --body-height: 100vh;
+  --app-header-height: 80px;
+  --needly-bottom-height: 8px;
+  --headin-margin-top: 40px;
+  --headin-margin-bottom: 20px;
+  --tab-height: 56px;
+  --tab-margin-bottom: 40px;
+  --type-block-padding-bottom: 40px;
+  --scroll-elements-margin-top: 100px;
+  --scroll-element-height: 80px;
+  --scroll-element-margin-bottom: 16px;
+  --scroll-elements-margin-bottom: 40px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -20,4 +35,28 @@ body {
 .burger-constructor_burger_constructor__total_cost svg {
   height: 32px;
   width: 32px;
+}
+
+.elements {
+  height: calc(
+    var(--body-height) - var(--app-header-height) - var(--needly-bottom-height) -
+      var(--headin-margin-top) - var(--headin-margin-bottom) - var(--tab-height) -
+      var(--tab-margin-bottom) - var(--type-block-padding-bottom)
+  );
+}
+
+.scroll_elements {
+  height: calc(
+    var(--body-height) - var(--app-header-height) - var(--needly-bottom-height) -
+      var(--scroll-elements-margin-top) - var(--scroll-element-height) -
+      var(--scroll-element-margin-bottom) - var(--scroll-element-height) -
+      var(--scroll-element-margin-bottom) - var(--scroll-element-height) -
+      var(--scroll-element-margin-bottom) - var(--scroll-elements-margin-bottom)
+  );
+}
+
+section {
+  height: calc(
+    var(--body-height) - var(--app-header-height) - var(--needly-bottom-height)
+  );
 }
