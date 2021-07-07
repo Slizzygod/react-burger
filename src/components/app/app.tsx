@@ -11,9 +11,14 @@ function App() {
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
-    dataService.get(`${spaceUrl}/api/ingredients`).then((requestData) => {
-      setData(requestData);
-    });
+    dataService
+      .get(`${spaceUrl}/api/ingredients`)
+      .then((requestData) => {
+        setData(requestData);
+      })
+      .catch((error) => {
+        dataService.onError(error);
+      });
   }, []);
 
   return (
