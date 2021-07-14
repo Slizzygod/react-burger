@@ -1,97 +1,165 @@
 import React from "react";
 
+import { useDrop } from "react-dnd";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  ADD_BUN,
+  ADD_INGREDIENT,
+  CHANGE_AMOUNT_BUN,
+  INCREASE_AMOUNT_INGREDIENT,
+  setOrder,
+  SET_ORDER_SUCCESS,
+} from "../../store/actions/burger";
+
 import {
   Button,
   CurrencyIcon,
   ConstructorElement,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import withModal from "../hoc/with-modal";
 
 import OrderDetails from "./order-details/order-details";
-
-import PropTypes from "prop-types";
-import { INGREDIENT_TYPE } from "../../shared/utils/types";
+import ScrollElement from "./scroll-element/scroll-element";
 
 import styles from "./burger-constructor.module.css";
 
-function BurgerConstructor({ data }) {
-  const [idOrder, setIdOrder] = React.useState<any | null>(null);
+function BurgerConstructor() {
+  const dispatch = useDispatch();
+
+  const data = useSelector((store: any) => store.burger.constructorIngredients);
+  const ingredients = useSelector((store: any) => store.burger.ingredients);
+  const order = useSelector((store: any) => store.burger.order);
+
+  const needlyBun = React.useMemo(
+    () => ingredients.find((ingredient) => ingredient._id === data.bun),
+    [ingredients, data.bun]
+  );
+
+  const needlyIngredients = React.useMemo(
+    () =>
+      data.ingredients.map((ingredient) =>
+        ingredients.find((el) => el._id === ingredient)
+      ),
+    [ingredients, data.ingredients]
+  );
 
   const handleChildUnmount = () => {
-    setIdOrder(null);
+    dispatch({ type: SET_ORDER_SUCCESS, payload: null });
   };
 
   const WithModal = withModal({
-    data: idOrder,
+    data: order,
     unmount: handleChildUnmount,
     displayTitle: false,
   })(OrderDetails);
 
-  const onClickCreateOrder = () => {
-    setIdOrder("034536");
+  const [, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(itemId) {
+      onDropHandler(itemId);
+    },
+    collect: (monitor) => ({
+      canDrop: monitor.canDrop(),
+    }),
+  });
+
+  const onDropHandler = (data) => {
+    const ingredient = ingredients.find(
+      (ingredient) => ingredient._id === data._id
+    );
+
+    if (ingredient) {
+      if (ingredient.type === "bun") {
+        dispatch({ type: ADD_BUN, payload: ingredient._id });
+        dispatch({ type: CHANGE_AMOUNT_BUN, payload: ingredient._id });
+      } else {
+        dispatch({ type: ADD_INGREDIENT, payload: ingredient._id });
+        dispatch({ type: INCREASE_AMOUNT_INGREDIENT, payload: ingredient._id });
+      }
+    }
   };
 
+  const onClickCreateOrder = () => {
+    dispatch(setOrder([data.bun, ...data.ingredients, data.bun]));
+  };
+
+  const totalPrice = [...needlyIngredients, needlyBun, needlyBun].reduce(
+    (el, acc) => {
+      return el + (acc ? acc : { price: 0 }).price;
+    },
+    0
+  );
+
   return (
-    <section className={styles.section}>
-      {idOrder && <WithModal />}
+    <section className={styles.section} ref={dropTarget}>
+      {order && <WithModal />}
       <div className={`${styles.elements} pl-4 mt-25 mb-10`}>
-        <div className={`${styles.element_top} pr-4`}>
-          {data && data.length > 0 && (
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={data[0].name}
-              price={data[0].price}
-              thumbnail={data[0].image}
-            />
+        <div
+          className={
+            needlyIngredients && needlyIngredients.length > 4 ? "pr-4" : "pr-1"
+          }
+        >
+          {needlyBun && (
+            <li className={styles.element_bottom}>
+              <div className="p-4"></div>
+              <ConstructorElement
+                type="top"
+                isLocked={true}
+                text={needlyBun.name}
+                price={needlyBun.price}
+                thumbnail={needlyBun.image}
+              />
+            </li>
           )}
         </div>
 
         <ul className={`${styles.scroll_elements} scroll_elements pr-1`}>
-          {data &&
-            data.length > 0 &&
-            data.map((ingredient) => (
-              <li key={ingredient._id} className={styles.scroll_element}>
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  text={ingredient.name}
-                  price={ingredient.price}
-                  thumbnail={ingredient.image}
-                />
-              </li>
+          {needlyIngredients &&
+            needlyIngredients.length > 0 &&
+            needlyIngredients.map((ingredient, index) => (
+              <ScrollElement
+                ingredient={ingredient}
+                index={index}
+                key={index}
+              />
             ))}
         </ul>
 
-        <div className={`${styles.element_bottom} pr-4`}>
-          {data && data.length > 0 && (
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={data[data.length - 1].name}
-              price={data[data.length - 1].price}
-              thumbnail={data[data.length - 1].image}
-            />
+        <div
+          className={
+            needlyIngredients && needlyIngredients.length > 4 ? "pr-4" : "pr-1"
+          }
+        >
+          {needlyBun && (
+            <li className={styles.element_bottom}>
+              <div className="p-4"></div>
+              <ConstructorElement
+                type="bottom"
+                isLocked={true}
+                text={needlyBun.name}
+                price={needlyBun.price}
+                thumbnail={needlyBun.image}
+              />
+            </li>
           )}
         </div>
       </div>
 
-      <div className={`${styles.footer} pr-4`}>
-        <div className={`${styles.total_cost} mr-10`}>
-          <p className="text_type_digits-medium pr-2">610</p>
-          <CurrencyIcon type="primary" />
+      {needlyIngredients && needlyIngredients.length > 0 && needlyBun && (
+        <div className={`${styles.footer} pr-4`}>
+          <div className={`${styles.total_cost} mr-10`}>
+            <p className="text_type_digits-medium pr-2">{totalPrice}</p>
+            <CurrencyIcon type="primary" />
+          </div>
+          <Button onClick={onClickCreateOrder} type="primary" size="large">
+            Оформить заказ
+          </Button>
         </div>
-        <Button onClick={onClickCreateOrder} type="primary" size="large">
-          Оформить заказ
-        </Button>
-      </div>
+      )}
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape(INGREDIENT_TYPE)),
-};
 
 export default BurgerConstructor;

@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Link } from "react-scroll";
+
 import PropTypes from "prop-types";
 import { INGREDIENT_GROUP_TYPE } from "../../../shared/utils/types";
 
@@ -12,14 +14,23 @@ function IngredientTypeTab({ types }) {
     <nav style={{ display: "flex" }}>
       {types &&
         types.map((el) => (
-          <Tab
+          <Link
+            to={el.type}
+            spy={true}
+            smooth={true}
+            duration={500}
             key={el.type}
-            value={el.type}
-            active={current === el.type}
-            onClick={setCurrent}
+            onSetActive={setCurrent}
+            containerId="scroll-ingredients"
           >
-            {el.name}
-          </Tab>
+            <Tab
+              value={el.type}
+              active={current === el.type}
+              onClick={setCurrent}
+            >
+              {el.name}
+            </Tab>
+          </Link>
         ))}
     </nav>
   );
