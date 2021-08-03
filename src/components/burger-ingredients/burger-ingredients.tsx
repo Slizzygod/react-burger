@@ -25,7 +25,7 @@ function BurgerIngredients() {
     dispatch({ type: SET_SELECTED_INGREDIENT, payload: null });
   };
 
-  const WithModal = withModal({
+  const IngredientInfoModal = withModal({
     data: selectedIngredient,
     unmount: handleChildUnmount,
     displayTitle: true,
@@ -40,7 +40,7 @@ function BurgerIngredients() {
 
   return (
     <section className={`${styles.section} mr-10`}>
-      {selectedIngredient && <WithModal />}
+      {selectedIngredient && <IngredientInfoModal />}
       <p className="mt-10 mb-5 text_type_main-large">Соберите бургер</p>
 
       <IngredientTypeTab types={ingredientTypes} />

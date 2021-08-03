@@ -28,7 +28,7 @@ function Header() {
         </div>
 
         <div className={styles.logo}>
-          <a href="/">
+          <a href="##">
             <Logo />
           </a>
         </div>
