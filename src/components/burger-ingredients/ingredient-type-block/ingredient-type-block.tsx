@@ -12,7 +12,7 @@ import styles from "./ingredient-type-block.module.css";
 
 function IngredientTypeBlock({ ingredientData, onClickIngredient }) {
   return (
-    <div>
+    <div id={ingredientData.type}>
       <p className="text text_type_main-medium">{ingredientData.name}</p>
       <div className={`${styles.block} pl-4 pt-6 pr-1 pb-10`}>
         {ingredientData &&

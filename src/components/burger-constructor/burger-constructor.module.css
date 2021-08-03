@@ -35,12 +35,13 @@
 }
 
 .element_top {
-  margin: 0 auto;
-  padding-right: 0;
+  composes: element;
+  justify-content: space-between;
 }
 
 .element_bottom {
-  margin-left: auto;
+  composes: element;
+  justify-content: space-between;
 }
 
 .scroll_element {

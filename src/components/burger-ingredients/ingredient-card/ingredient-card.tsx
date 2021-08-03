@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useDrag } from "react-dnd";
+
 import {
   CurrencyIcon,
   Counter,
@@ -11,12 +13,19 @@ import { INGREDIENT_TYPE } from "../../../shared/utils/types";
 import styles from "./ingredient-card.module.css";
 
 function IngredientTypeCard({ ingredient, onClickIngredient }) {
+  const { _id } = ingredient;
+  const [, dragRef] = useDrag({
+    type: "ingredient",
+    item: { _id },
+  });
+
   return (
     <div
       className={`${styles.card} pr-4 pl-4`}
       onClick={() => onClickIngredient(ingredient)}
+      ref={dragRef}
     >
-      <Counter count={1} size="default" />
+      <Counter count={ingredient.__v} size="default" />
       <img src={ingredient.image} alt={ingredient.name} />
       <div className={`${styles.cost} mt-1 mb-1`}>
         <p className="text_type_digits-default pr-2">{ingredient.price}</p>

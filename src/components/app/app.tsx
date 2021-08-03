@@ -1,33 +1,32 @@
 import React from "react";
 
-import { Header, BurgerIngredients, BurgerConstructor } from "../index";
+import { useDispatch } from "react-redux";
 
-import { spaceUrl } from "../../shared/utils/consts";
-import { dataService } from "../../shared/services/data.service";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+import { getIngredients } from "../../store/actions/burger";
+
+import { Header, BurgerIngredients, BurgerConstructor } from "../index";
 
 import styles from "./app.module.css";
 
 function App() {
-  const [data, setData] = React.useState([]);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dataService
-      .get(`${spaceUrl}/api/ingredients`)
-      .then((requestData) => {
-        setData(requestData);
-      })
-      .catch((error) => {
-        dataService.onError(error);
-      });
-  }, []);
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <>
       <Header />
       <main>
         <div className={styles.content}>
-          <BurgerIngredients data={data} />
-          <BurgerConstructor data={data} />
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </DndProvider>
         </div>
       </main>
     </>

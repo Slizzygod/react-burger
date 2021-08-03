@@ -1,7 +1,7 @@
 import React from "react";
 
-import PropTypes from "prop-types";
-import { INGREDIENT_TYPE } from "../../shared/utils/types";
+import { useSelector, useDispatch } from "react-redux";
+import { SET_SELECTED_INGREDIENT } from "../../store/actions/burger";
 
 import withModal from "../hoc/with-modal";
 
@@ -13,11 +13,16 @@ import { dataMapService } from "../../shared/services/data-map.service";
 
 import styles from "./burger-ingredients.module.css";
 
-function BurgerIngredients({ data }) {
-  const [selectedIngredient, setSelectedIngredient] = React.useState(null);
+function BurgerIngredients() {
+  const dispatch = useDispatch();
+
+  const data = useSelector((store: any) => store.burger.ingredients);
+  const selectedIngredient = useSelector(
+    (store: any) => store.burger.selectedIngredient
+  );
 
   const handleChildUnmount = () => {
-    setSelectedIngredient(null);
+    dispatch({ type: SET_SELECTED_INGREDIENT, payload: null });
   };
 
   const WithModal = withModal({
@@ -30,7 +35,7 @@ function BurgerIngredients({ data }) {
   const ingredientTypes = dataMapService.getIngredientTypes(data);
 
   const onClickIngredient = (ingredient) => {
-    setSelectedIngredient(ingredient);
+    dispatch({ type: SET_SELECTED_INGREDIENT, payload: ingredient });
   };
 
   return (
@@ -40,7 +45,10 @@ function BurgerIngredients({ data }) {
 
       <IngredientTypeTab types={ingredientTypes} />
 
-      <div className={`${styles.elements} elements mt-10`}>
+      <div
+        className={`${styles.elements} elements mt-10`}
+        id="scroll-ingredients"
+      >
         {ingredientsData &&
           ingredientsData.map((ingredientData) => (
             <IngredientTypeBlock
@@ -53,9 +61,5 @@ function BurgerIngredients({ data }) {
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape(INGREDIENT_TYPE)),
-};
 
 export default BurgerIngredients;
