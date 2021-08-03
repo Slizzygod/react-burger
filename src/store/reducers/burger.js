@@ -10,8 +10,10 @@ import {
   ADD_INGREDIENT,
   REMOVE_INGREDIENT,
   MOVE_INGREDIENT,
+  REMOVE_INGREDIENTS,
   INCREASE_AMOUNT_INGREDIENT,
   REDUCE_AMOUNT_INGREDIENT,
+  DISCARD_AMOUNT_INGREDIENTS,
   CHANGE_AMOUNT_BUN,
   ADD_BUN,
 } from "../actions/burger";
@@ -92,6 +94,12 @@ export const burgerReducer = (state = initialState, action) => {
         },
       };
     }
+    case REMOVE_INGREDIENTS: {
+      return {
+        ...state,
+        constructorIngredients: action.payload,
+      };
+    }
 
     case INCREASE_AMOUNT_INGREDIENT: {
       return {
@@ -117,6 +125,16 @@ export const burgerReducer = (state = initialState, action) => {
         }),
       };
     }
+    case DISCARD_AMOUNT_INGREDIENTS: {
+      return {
+        ...state,
+        ingredients: [...state.ingredients].map((ingredient) => {
+          ingredient.__v = 0;
+
+          return ingredient;
+        }),
+      };
+    }
 
     case CHANGE_AMOUNT_BUN: {
       return {
@@ -124,7 +142,7 @@ export const burgerReducer = (state = initialState, action) => {
         ingredients: [...state.ingredients].map((ingredient) => {
           if (ingredient.type === "bun") {
             if (ingredient._id === action.payload) {
-              ingredient.__v = 1;
+              ingredient.__v = 2;
             } else {
               ingredient.__v = 0;
             }

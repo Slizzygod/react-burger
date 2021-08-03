@@ -49,7 +49,7 @@ function BurgerConstructor() {
     dispatch({ type: SET_ORDER_SUCCESS, payload: null });
   };
 
-  const WithModal = withModal({
+  const OrderDetailsModal = withModal({
     data: order,
     unmount: handleChildUnmount,
     displayTitle: false,
@@ -94,7 +94,7 @@ function BurgerConstructor() {
 
   return (
     <section className={styles.section} ref={dropTarget}>
-      {order && <WithModal />}
+      {order && <OrderDetailsModal />}
       <div className={`${styles.elements} pl-4 mt-25 mb-10`}>
         <div
           className={
@@ -107,7 +107,7 @@ function BurgerConstructor() {
               <ConstructorElement
                 type="top"
                 isLocked={true}
-                text={needlyBun.name}
+                text={`${needlyBun.name} (верх)`}
                 price={needlyBun.price}
                 thumbnail={needlyBun.image}
               />
@@ -138,7 +138,7 @@ function BurgerConstructor() {
               <ConstructorElement
                 type="bottom"
                 isLocked={true}
-                text={needlyBun.name}
+                text={`${needlyBun.name} (низ)`}
                 price={needlyBun.price}
                 thumbnail={needlyBun.image}
               />

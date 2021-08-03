@@ -15,9 +15,11 @@ const SET_ORDER_FAILED = "SET_ORDER_FAILED";
 const ADD_INGREDIENT = "ADD_INGREDIENT";
 const REMOVE_INGREDIENT = "REMOVE_INGREDIENT";
 const MOVE_INGREDIENT = "MOVE_INGREDIENT";
+const REMOVE_INGREDIENTS = "REMOVE_INGREDIENTS";
 
 const INCREASE_AMOUNT_INGREDIENT = "INCREASE_AMOUNT_INGREDIENT";
 const REDUCE_AMOUNT_INGREDIENT = "REDUCE_AMOUNT_INGREDIENT";
+const DISCARD_AMOUNT_INGREDIENTS = "DISCARD_AMOUNT_INGREDIENTS";
 
 const CHANGE_AMOUNT_BUN = "CHANGE_AMOUNT_BUN";
 
@@ -48,6 +50,11 @@ const setOrder = (data) => {
           type: SET_ORDER_SUCCESS,
           payload: requestData.order.number,
         });
+        dispatch({
+          type: REMOVE_INGREDIENTS,
+          payload: { bun: null, ingredients: [] },
+        });
+        dispatch({ type: DISCARD_AMOUNT_INGREDIENTS });
       })
       .catch((error) => {
         dispatch({ type: SET_ORDER_FAILED });
@@ -70,8 +77,10 @@ export {
   ADD_INGREDIENT,
   REMOVE_INGREDIENT,
   MOVE_INGREDIENT,
+  REMOVE_INGREDIENTS,
   INCREASE_AMOUNT_INGREDIENT,
   REDUCE_AMOUNT_INGREDIENT,
+  DISCARD_AMOUNT_INGREDIENTS,
   CHANGE_AMOUNT_BUN,
   ADD_BUN,
 };
